@@ -1,11 +1,11 @@
 #include <WiFi.h> // Wifi library
 
 // Your WiFi credentials
-#define WIFI_SSID "GlobeAtHome_E1DB2"
-#define WIFI_PASSWORD "passwordnatin"
+#define WIFI_SSID "Redmitest"
+#define WIFI_PASSWORD "123456780"
 
 //User sa Bahay "GlobeAtHome_E1DB2"
-//Pass sa Bahay "5DFF74E1"
+//Pass sa Bahay "passwordnatin"
 
 //User kila Jim "Pisonet"
 //Pass kila Jim "nicopanget"

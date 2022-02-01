@@ -65,3 +65,35 @@ void Dht_Loop(){
     Serial.println(F("%"));
   }
 } 
+
+float TemperatureValue(){
+  delay(1500);
+  sensors_event_t event;
+  dht.temperature().getEvent(&event);
+  if (isnan(event.temperature)) {
+    Serial.println(F("Error reading temperature!"));
+  }
+  else {
+    Serial.print(F("Temperature: "));
+    Serial.print(event.temperature);
+    Serial.println(F("°C"));
+  }
+
+  return event.temperature;
+}
+
+float HumidityValue(){
+  delay(1500);
+  sensors_event_t event;
+  dht.humidity().getEvent(&event);
+  if (isnan(event.relative_humidity)) {
+    Serial.println(F("Error reading humidity!"));
+  }
+  else {
+    Serial.print(F("Humidity: "));
+    Serial.print(event.relative_humidity);
+    Serial.println(F("%"));
+  }
+
+  return event.relative_humidity;
+}

@@ -4,6 +4,8 @@
 SFE_TSL2561 light;  //For tsl Lux sensor
 boolean gain;     // Gain setting, 0 = X1, 1 = X16;
 unsigned int luxms;  // Integration ("shutter") time in milliseconds
+double lux;    // Resulting lux value
+boolean good;  // True if neither sensor is saturated
 
 void printError(byte error)   // If there's an I2C error, this function will
                               // print out an explanation.
@@ -104,7 +106,7 @@ void Lux_Loop(){
     Serial.print(data1);
   
     double lux;    // Resulting lux value
-    boolean good;  // True if neither sensor is saturated
+
     
     // Perform lux calculation:
 
@@ -122,4 +124,24 @@ void Lux_Loop(){
     byte error = light.getError();
     printError(error);
   }
+}
+
+float LuxValue(){
+  delay(1500);
+  unsigned int data0, data1;
+  if (light.getData(data0,data1))
+  {
+    good = light.getLux(gain,luxms,data0,data1,lux);
+    Serial.print(" lux: ");
+    Serial.print(lux);
+  }
+  else
+  {
+    // getData() returned false because of an I2C error, inform the user.
+
+    byte error = light.getError();
+    printError(error);
+  }
+
+  return float(lux);
 }
