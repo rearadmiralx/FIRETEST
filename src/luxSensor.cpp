@@ -127,7 +127,7 @@ void Lux_Loop(){
 }
 
 float LuxValue(){
-  delay(1500);
+  delay(1000);
   unsigned int data0, data1;
   if (light.getData(data0,data1))
   {

@@ -19,6 +19,7 @@ extern float PhValue();
 
 
 extern void Wifi_Init();
+extern void printLocalTime();
 extern void Firebase_Init();
 extern void Firebase_RelayInit();
 extern void Firebase_SensorLoop();

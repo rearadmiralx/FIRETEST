@@ -23,12 +23,12 @@ FirebaseJson sensorHumidity_json, sensorLux_json, sensorPhLevel_json, sensorTds_
 
 //Pin Declaration
 int pinRelayPump = 16;
-int pinRelayLight = 33;
+int pinRelayLight = 25;
 int pinRelayPhUp = 27;
 int pinRelayPhDown = 14;
 int pinRelayNutrientA = 26;
 int pinRelayNutrientB = 17;
-int pinRelayFan = 25;
+int pinRelayFan = 33;
 
 
 
@@ -55,19 +55,25 @@ String pumpValue, lightValue, nutrientaValue, nutrientbValue,
  * 
  **********************************************************************/ 
 void Firebase_RelayInit(){
+  pinMode(pinRelayFan , OUTPUT);
+  pinMode(pinRelayPump , OUTPUT);
+  pinMode(pinRelayLight , OUTPUT);
+  pinMode(pinRelayPhUp , OUTPUT);
+  pinMode(pinRelayPhDown , OUTPUT);
+  pinMode(pinRelayNutrientA , OUTPUT);
+  pinMode(pinRelayNutrientB, OUTPUT);
+//   relayPump_json.add("name", "Water Pump");
+//   if(pinRelayPump == HIGH){
+//     relayPump_json.add("value", "ON");
+//   }
+//   else{
+//     relayPump_json.add("value", "OFF");
+//   }
 
-  relayPump_json.add("name", "Water Pump");
-  if(pinRelayPump == HIGH){
-    relayPump_json.add("value", "ON");
-  }
-  else{
-    relayPump_json.add("value", "OFF");
-  }
-
- // Print out initial temperature values
-  String jsonStr;
-  relayPump_json.toString(jsonStr, true);
-  Serial.println(jsonStr);
+//  // Print out initial temperature values
+//   String jsonStr;
+//   relayPump_json.toString(jsonStr, true);
+//   Serial.println(jsonStr);
 
 }
 
@@ -82,46 +88,40 @@ void Relay_Status(){
   if (Firebase.getString(fbdo, pathRelayFan + "/value")) {
         fanValue = fbdo.stringData();
         Serial.println("fan is " + fanValue);
-        fanValue == "ON" ? digitalWrite(pinRelayFan, HIGH): digitalWrite(pinRelayFan, LOW);
+        fanValue == "ON" ? digitalWrite(pinRelayFan, LOW): digitalWrite(pinRelayFan, HIGH);
   }
-  delay(1000);
   if (Firebase.getString(fbdo, pathRelayLight + "/value"))
   {
     lightValue = fbdo.stringData();
     Serial.println("lighRelay is " + lightValue);
-    lightValue == "ON" ? digitalWrite(pinRelayLight, HIGH) : digitalWrite(pinRelayLight, LOW);
+    lightValue == "ON" ? digitalWrite(pinRelayLight, LOW) : digitalWrite(pinRelayLight, HIGH);
   }
-  delay(1000);
   if (Firebase.getString(fbdo, pathRelayNutrientA + "/value")) {
         nutrientaValue = fbdo.stringData();
         Serial.println("nutrientA is " + nutrientaValue);
-        nutrientaValue == "ON" ? digitalWrite(pinRelayNutrientA, HIGH) : digitalWrite(pinRelayNutrientA, LOW);
+        nutrientaValue == "ON" ? digitalWrite(pinRelayNutrientA, LOW) : digitalWrite(pinRelayNutrientA, HIGH);
   }
-  delay(1000);
   if (Firebase.getString(fbdo, pathRelayNutrientB + "/value")) {
         nutrientbValue = fbdo.stringData();
         Serial.println("nutrientB is " + nutrientbValue);
-        nutrientbValue == "ON" ? digitalWrite(pinRelayNutrientB, HIGH) : digitalWrite(pinRelayNutrientB, LOW);
+        nutrientbValue == "ON" ? digitalWrite(pinRelayNutrientB, LOW) : digitalWrite(pinRelayNutrientB, HIGH);
   }
-  delay(1000);
   if (Firebase.getString(fbdo, pathRelayPhDown + "/value")) {
       phDownValue = fbdo.stringData();
       Serial.println("phDown is " + phDownValue);
-      phDownValue == "ON" ? digitalWrite(pinRelayPhDown, HIGH) : digitalWrite(pinRelayPhDown, LOW);
+      phDownValue == "ON" ? digitalWrite(pinRelayPhDown, LOW) : digitalWrite(pinRelayPhDown, HIGH);
   }
-  delay(1000);
   if (Firebase.getString(fbdo, pathRelayPhUp + "/value")) {
         phUpValue = fbdo.stringData();
         Serial.println("ph UP is " + phUpValue);
-        phUpValue == "ON" ? digitalWrite(pinRelayPhUp, HIGH) : digitalWrite(pinRelayPhUp, LOW);
+        phUpValue == "ON" ? digitalWrite(pinRelayPhUp, LOW) : digitalWrite(pinRelayPhUp, HIGH);
   }
 
-  // if (Firebase.getString(fbdo, pathRelayPump + "/value")) {
-  //       pumpValue = fbdo.stringData();
-  //       Serial.println("pumRelay is " + pumpValue + "\n");
-  //       pumpValue == "ON" ? digitalWrite(pinRelayPump, HIGH) : digitalWrite(pinRelayPump, LOW);
-  // }
-
+  if (Firebase.getString(fbdo, pathRelayPump + "/value")) {
+        pumpValue = fbdo.stringData();
+        Serial.println("pumRelay is " + pumpValue + "\n");
+        pumpValue == "ON" ? digitalWrite(pinRelayPump, LOW) : digitalWrite(pinRelayPump, HIGH);
+  }
 }
 
 /**********************************************************************
@@ -141,8 +141,10 @@ void Sensor_Status(FirebaseJson JsonVal, String path, float value){
 }
 
 void SensorRollCallback(){
-  // Sensor_Status(sensorLux_json, pathSensor+"lux/value", LuxValue());
-  Sensor_Status(sensorPhLevel_json, pathSensor+"phLevel/value", PhValue());
+  Sensor_Status(sensorLux_json, pathSensor+"lux/value", LuxValue());
+  Sensor_Status(sensorHumidity_json, pathSensor+"humidity/value", HumidityValue());
+  Sensor_Status(sensorTemp_json, pathSensor+"temperature/value", TemperatureValue());
+  // Sensor_Status(sensorPhLevel_json, pathSensor+"phLevel/value", PhValue());
 
 }
 
@@ -196,7 +198,7 @@ void Firebase_Init() {
     Serial.print(fuid);
     isAuthenticated = true;
 
-    // Firebase_RelayInit();
+    Firebase_RelayInit();
 }
 
 

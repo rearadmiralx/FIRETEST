@@ -43,7 +43,7 @@ void Dht_Init(){
 }
 
 void Dht_Loop(){
-  delay(5000);
+  delay(500);
   sensors_event_t event;
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
