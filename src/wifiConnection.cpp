@@ -36,7 +36,7 @@ void Wifi_Init() {
 
     //init and get the time
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-    printLocalTime();
+    // printLocalTime();
 
     //disconnect WiFi as it's no longer needed
     WiFi.disconnect(true);
